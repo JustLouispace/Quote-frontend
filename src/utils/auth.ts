@@ -1,35 +1,61 @@
-// Basic auth utility functions
-export const login = async (email: string, password: string) => {
-    try {
-        // TODO: Replace with actual API call
-        const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
+interface User {
+    id: number;
+    username: string;
+}
 
-        if (!response.ok) {
-            throw new Error('Login failed');
-        }
+interface LoginResponse {
+    token: string;
+    user: User;
+}
 
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Login error:', error);
-        throw error;
+export const login = async (username: string, password: string): Promise<LoginResponse> => {
+    const response = await fetch('http://localhost:8080/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Login failed');
+    }
+
+    return response.json();
+};
+
+export const register = async (username: string, password: string): Promise<void> => {
+    const response = await fetch('http://localhost:8080/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Registration failed');
     }
 };
 
-export const logout = async () => {
-    try {
-        // TODO: Replace with actual API call
-        await fetch('/api/auth/logout', {
-            method: 'POST',
-        });
-    } catch (error) {
-        console.error('Logout error:', error);
-        throw error;
-    }
+export const getToken = (): string | null => {
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem('token');
+};
+
+export const getUser = (): User | null => {
+    if (typeof window === 'undefined') return null;
+    const userStr = localStorage.getItem('user');
+    return userStr ? JSON.parse(userStr) : null;
+};
+
+export const isAuthenticated = (): boolean => {
+    return !!getToken();
+};
+
+export const logout = (): void => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
 }; 
