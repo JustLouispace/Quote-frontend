@@ -1,6 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useQuotes } from '@/hooks/useQuotes';
+import { useRouter } from 'next/navigation';
+import { isAuthenticated } from '@/utils/auth';
 import {
   BarChart,
   Bar,
@@ -13,6 +16,12 @@ import {
 } from 'recharts';
 
 export default function ChartsPage() {
+  const router = useRouter();
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      router.replace('/login');
+    }
+  }, [router]);
   const { quotes, loading, error } = useQuotes();
 
   const votesByAuthor = quotes.reduce((acc, quote) => {

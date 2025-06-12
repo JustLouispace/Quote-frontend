@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { isAuthenticated } from '@/utils/auth';
 import { useQuotes } from '@/hooks/useQuotes';
 import { useModals } from '@/hooks/useModals';
 import { useQuoteFilters } from '@/hooks/useQuoteFilters';
@@ -16,6 +18,12 @@ import VoteConfirmationModal from '@/components/modals/VoteConfirmationModal';
 import Notification from '@/components/ui/Notification';
 
 export default function QuotesPage() {
+  const router = useRouter();
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      router.replace('/login');
+    }
+  }, [router]);
   const {
     quotes,
     loading,

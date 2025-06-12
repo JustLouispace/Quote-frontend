@@ -9,5 +9,5 @@ if (!apiBaseUrl) {
 export const config = {
   // Provide a fallback for server-side processes where env var might not be available, 
   // though for client-side fetching it will be there.
-  apiBaseUrl: apiBaseUrl || 'http://localhost:8080',
+  apiBaseUrl: apiBaseUrl || 'https://qoute-backend.onrender.com',
 };
