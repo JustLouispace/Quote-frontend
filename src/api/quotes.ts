@@ -20,16 +20,13 @@ export async function fetchQuotes(): Promise<Quote[]> {
   });
   if (!res.ok) {
     if (res.status === 401) {
-      // Try to get error message from backend response body
       try {
         const errorData = await res.json();
         throw new Error(`Unauthorized: ${errorData.error || errorData.detail || 'Please log in to view quotes.'}`);
       } catch (parseError) {
-        // Fallback if response body isn't JSON or doesn't have expected error structure
         throw new Error('Unauthorized: Please log in to view quotes.');
       }
     }
-    // For other errors, try to get a message from the body or use status
     try {
       const errorData = await res.json();
       throw new Error(`API Error: ${errorData.error || errorData.detail || `Failed to fetch quotes (status: ${res.status})`}`);

@@ -49,7 +49,7 @@ npm start
 ```
 
 ## Environment Variables
-Create a `.env.local` file in the root directory for your environment variables (such as API endpoints, secrets, etc.). **Do not commit this file to GitHub.**
+Create a `.env.local` file in the root directory for your environment variables (such as API endpoints, secrets, etc.). 
 
 Example:
 ```
@@ -59,6 +59,7 @@ NEXT_PUBLIC_API_URL=https://api.example.com
 ## Folder Structure
 - `src/` - Main application source code
 - `src/app/` - App routes and pages
+- `src/api/` - API endpoints
 - `src/hooks/` - Custom React hooks
 
 ## Contribution
